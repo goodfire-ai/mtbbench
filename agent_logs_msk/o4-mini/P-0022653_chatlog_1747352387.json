@@ -1,0 +1,145 @@
+[
+  {
+    "question": "Given that the patient is 47.1 years old, will the cancer progress in the next 24 months?\nA) Yes\nB) No",
+    "answer": "B) No",
+    "response": "A) Yes",
+    "correct": false,
+    "files_accessed": [
+      "timeline0.txt"
+    ],
+    "files_hallucinated": [],
+    "question_time": 10.883058786392212
+  },
+  {
+    "question": "Given that the patient is 47.1 years old, will the patient be still alive in the next 24 months?\nA) Yes\nB) No",
+    "answer": "A) Yes",
+    "response": "A) Yes",
+    "correct": true,
+    "files_accessed": [
+      "timeline0.txt"
+    ],
+    "files_hallucinated": [],
+    "question_time": 11.396023511886597
+  },
+  {
+    "question": "Given that the patient is 50 years old, will the cancer progress in the next 12 months?\nA) Yes\nB) No",
+    "answer": "B) No",
+    "response": "B) No",
+    "correct": true,
+    "files_accessed": [
+      "timeline1.txt",
+      "specimen.txt"
+    ],
+    "files_hallucinated": [
+      "specimen_cna.txt",
+      "specimen_mutations.txt"
+    ],
+    "question_time": 23.596193552017212
+  },
+  {
+    "question": "Given that the patient is 50 years old, will the patient be still alive in the next 24 months?\nA) Yes\nB) No",
+    "answer": "A) Yes",
+    "response": "A) Yes",
+    "correct": true,
+    "files_accessed": [],
+    "files_hallucinated": [],
+    "question_time": 3.5399625301361084
+  },
+  {
+    "question": "Given that the patient is 52 years old, will the patient be still alive in the next 12 months?\nA) Yes\nB) No",
+    "answer": "A) Yes",
+    "response": "A) Yes",
+    "correct": true,
+    "files_accessed": [],
+    "files_hallucinated": [],
+    "question_time": 2.9074347019195557
+  },
+  {
+    "conversation": [
+      {
+        "role": "system",
+        "content": "You are a pathologist AI assistant expert at analyzing patient data and answering user questions.\nYou will be provided with files that you are allowed to read.\nMore files may become available as the conversation progresses.\nTo ask for files, include in your reasoning [REQUEST: filename.extension] for each file you needExample: [REQUEST: image1.jpg] [REQUEST: image2.jpg]\nYou may request multiple files at once if necessary. If you ask for a file wait to receive it from the user.\nTo provide a final answer to a question, include [ANSWER: CHOICE) your answer] in your response, specifying the answer choice you picked (A, B, C, D, E, or F).\nYou MUST ONLY provide [ANSWER] when you have all necessary information."
+      },
+      {
+        "role": "user",
+        "content": "You are given the following new patient information: \nThe patient is a 40.6-year-old White female of non-Hispanic ethnicity with a diagnosis of breast invasive ductal carcinoma. Comprehensive medical history, including details on diagnosis, treatments, and lab tests, is available for the time period spanning from 40.6 to 47.1 years of age.\nNew files available:\n[FILE: timeline0.txt]Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary. If you ask for a file wait to receive it from the user.\n\n Question: Given that the patient is 47.1 years old, will the cancer progress in the next 24 months?\nA) Yes\nB) No\n Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary\n"
+      },
+      {
+        "role": "assistant",
+        "content": "[REQUEST: timeline0.txt]"
+      },
+      {
+        "role": "user",
+        "content": "[FILE: timeline0.txt] was accessed by you\nYou can access all these files once again if necessary by asking for them in the format [REQUEST: filename.extension].\n"
+      },
+      {
+        "role": "assistant",
+        "content": "Based on the patient\u2019s relapse with detectable metastatic disease at age 46.6 and the need for multi\u2010agent chemotherapy, further progression within the next two years is highly likely.  \n[ANSWER: A) Yes]"
+      },
+      {
+        "role": "user",
+        "content": "\n Question: Given that the patient is 47.1 years old, will the patient be still alive in the next 24 months?\nA) Yes\nB) No\n Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary\n"
+      },
+      {
+        "role": "assistant",
+        "content": "[REQUEST: timeline0.txt]"
+      },
+      {
+        "role": "user",
+        "content": "[FILE: timeline0.txt] was accessed by you\nYou can access all these files once again if necessary by asking for them in the format [REQUEST: filename.extension].\n"
+      },
+      {
+        "role": "assistant",
+        "content": "Based on the patient\u2019s good performance status (ECOG 0) at 46.7, stable tumor markers, no evidence of rapid progression on imaging, and ongoing systemic therapy for limited\u2010volume metastatic disease, it is more likely than not that she will still be alive 24 months later.  \n[ANSWER: A) Yes]"
+      },
+      {
+        "role": "user",
+        "content": "You are given the following new patient information: \nThe patient exhibits no evidence of cancer progression over the past 24 months. Comprehensive genomic profiling has been performed, with both CNA and mutation data available for evaluation. Additionally, detailed patient history, including information on diagnosis, treatments, and lab tests, is accessible for the period between 47.1 and 50 years of age.\nNew files available:\n[FILE: specimen.txt]\n[FILE: timeline0.txt]\n[FILE: timeline1.txt]Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary. If you ask for a file wait to receive it from the user.\n\n Question: Given that the patient is 50 years old, will the cancer progress in the next 12 months?\nA) Yes\nB) No\n Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary\n"
+      },
+      {
+        "role": "assistant",
+        "content": "[REQUEST: specimen.txt] [REQUEST: timeline1.txt]"
+      },
+      {
+        "role": "user",
+        "content": "[FILE: timeline1.txt] was accessed by you\n[FILE: specimen.txt] was accessed by you\nYou can access all these files once again if necessary by asking for them in the format [REQUEST: filename.extension].\n"
+      },
+      {
+        "role": "assistant",
+        "content": ""
+      },
+      {
+        "role": "user",
+        "content": "Please provide the final answer in [ANSWER: LETTER) answer] specifying the answer choice letter you picked (A, B, C, D, E, or F) or ask for files with [REQUEST: filename.extension]. Make sure you have both the opening an closing brackets"
+      },
+      {
+        "role": "assistant",
+        "content": "[REQUEST: specimen_cna.txt] [REQUEST: specimen_mutations.txt]"
+      },
+      {
+        "role": "user",
+        "content": "[FILE: specimen_cna.txt] not found. Only ask for files that were listed to you earlier! Example request format for 2 images: [REQUEST: image1.jpg] [REQUEST: image2.jpg]\n[FILE: specimen_mutations.txt] not found. Only ask for files that were listed to you earlier! Example request format for 2 images: [REQUEST: image1.jpg] [REQUEST: image2.jpg]\n"
+      },
+      {
+        "role": "assistant",
+        "content": "[ANSWER: B) No]"
+      },
+      {
+        "role": "user",
+        "content": "\n Question: Given that the patient is 50 years old, will the patient be still alive in the next 24 months?\nA) Yes\nB) No\n Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary\n"
+      },
+      {
+        "role": "assistant",
+        "content": "[ANSWER: A) Yes]"
+      },
+      {
+        "role": "user",
+        "content": "You are given the following new patient information: \nThe patient's cancer has shown no progression over the past 12 months. A detailed medical history is available, covering the diagnosis, treatments, and lab tests conducted during the patient\u2019s age range of 50 to 52 years.\nNew files available:\n[FILE: specimen.txt]\n[FILE: timeline0.txt]\n[FILE: timeline2.txt]\n[FILE: timeline1.txt]Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary. If you ask for a file wait to receive it from the user.\n\n Question: Given that the patient is 52 years old, will the patient be still alive in the next 12 months?\nA) Yes\nB) No\n Remember that you can ask for files by providing the following tag [REQUEST: filename.extension]. You may also ask for multiple files at once if necessary\n"
+      },
+      {
+        "role": "assistant",
+        "content": "[ANSWER: A) Yes]"
+      }
+    ]
+  }
+]

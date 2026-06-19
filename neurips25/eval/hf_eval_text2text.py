@@ -110,8 +110,17 @@ class BaseTextVLLMEval(BaseHuggingFaceEval):
         Load the model from the specified model name.
         """
         to_quantize = ["Qwen/Qwen3-32B", "meta-llama/Llama-3.3-70B-Instruct", "Qwen/Qwen3-235B-A22B", "mistralai/Mixtral-8x22B-Instruct-v0.1"]
+        # vLLM 0.23 removed the top-level `rope_scaling` kwarg from EngineArgs. Upstream
+        # only ever set it for Qwen3-235B-A22B (None for every other model) to extend that
+        # model's context via YaRN; pass the identical config through `hf_overrides` so the
+        # model still gets context extension instead of silently loading without it.
+        hf_overrides = (
+            {"rope_scaling": {"rope_type": "yarn", "factor": 4.0, "original_max_position_embeddings": 32768}}
+            if self.model_name == "Qwen/Qwen3-235B-A22B"
+            else None
+        )
         self.model = LLM(
-            model=self.model_name, 
+            model=self.model_name,
             trust_remote_code=True,
             tokenizer_mode="mistral" if self.model_name.startswith("mistralai/Mistral-7B-Instruct") else "auto",
             config_format="mistral" if self.model_name.startswith("mistralai/Mistral-7B-Instruct") else "hf",
@@ -119,9 +128,7 @@ class BaseTextVLLMEval(BaseHuggingFaceEval):
             dtype=torch.bfloat16 if self.model_name in to_quantize else "auto",
             quantization="bitsandbytes" if self.model_name in to_quantize else None,
             enforce_eager=False,
-            # vLLM 0.23 removed the `rope_scaling` kwarg from EngineArgs; it was only ever
-            # set for Qwen3-235B-A22B (None for every other model). To run that model under
-            # vLLM >= 0.23, pass the YaRN scaling via `hf_overrides={"rope_scaling": {...}}`.
+            hf_overrides=hf_overrides,
             max_num_seqs=1,
             # max_model_len=70000 if self.model_name.endswith("11B-Vision-Instruct") else 120000,
             tensor_parallel_size=max(torch.cuda.device_count() - 1, 1) if self.use_all_but_last_device else torch.cuda.device_count(),

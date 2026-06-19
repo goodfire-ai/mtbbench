@@ -1,3 +1,7 @@
+# All paths are relative to the repo root. Point the repo at staged data + models by
+# creating `data/` and `models/` symlinks at the repo root, e.g.
+#   MTBBENCH_DATA_ROOT=/abs/data MTBBENCH_MODELS_ROOT=/abs/models bash scripts/link_data.sh
+# (see scripts/link_data.sh and the README "Pointing at staged data" section).
 hancock:
   archive_path: data/hancock/archives
   extract_path: data/hancock/extracted
@@ -18,5 +22,7 @@ dataset:
 
 tools:
   drugbank: data/drugbank
+  conch: models/conch
+  uni: models/uni
 
 openai_token: ""

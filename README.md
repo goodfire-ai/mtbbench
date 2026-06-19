@@ -122,9 +122,13 @@ pyserini/faiss PubMed retrieval); those are not needed to run the benchmark.
 ### 2. Point at staged data + models
 
 The dataset's question JSONs embed **relative** `data/...` paths, so a `data/` directory must
-exist at the repo root. Wire it (and `models/`) up with no hardcoded paths:
+exist at the repo root. The repo already tracks a small `data/` (the shipped
+`cell_density_measurements.csv` and the ABMIL checkpoint); the staged root is a superset, so
+set `MTBBENCH_LINK_FORCE=1` to move the tracked `data/` aside to `data.bak` (nothing is
+deleted) before symlinking. Wire it (and `models/`) up with no hardcoded paths:
 
 ```bash
+MTBBENCH_LINK_FORCE=1 \
 MTBBENCH_DATA_ROOT=/abs/path/to/staged/data \
 MTBBENCH_MODELS_ROOT=/abs/path/to/models \
 bash scripts/link_data.sh

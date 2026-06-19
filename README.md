@@ -163,8 +163,12 @@ scores the logs (logs written, no parse errors, valid answers, and — for HANCO
 tool + CONCH fire with zero fallbacks). SLURM templates: `scripts/smoke_{msk,hancock}.sbatch`.
 
 ```bash
-DATA_ROOT=... MODELS_ROOT=... bash scripts/smoke.sh hancock "$MODELS_ROOT/Qwen2.5-VL-32B-Instruct" 1 ./agent_logs_hancock_smoke
-python scripts/analyze_smoke.py ./agent_logs_msk_smoke ./agent_logs_hancock_smoke smoke_summary.json
+bash scripts/smoke.sh hancock "$MTBBENCH_MODELS_ROOT/Qwen2.5-VL-32B-Instruct" 1 ./agent_logs_hancock_smoke
+# Score the bar. Pass the run's stdout (.out) so IHC/CONCH fires are counted from the
+# unmutated logger output -- the agent rewrites its conversation between questions, so the
+# JSON blob alone is only a lower bound and the zero-fallback check is not airtight.
+python scripts/analyze_smoke.py ./agent_logs_msk_smoke ./agent_logs_hancock_smoke smoke_summary.json \
+  --hancock-stdout ./smoke_smoke-mtb-hancock_<jobid>.out
 ```
 
 ### Data acquisition (gated / external sources)

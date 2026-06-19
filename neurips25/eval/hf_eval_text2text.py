@@ -119,7 +119,9 @@ class BaseTextVLLMEval(BaseHuggingFaceEval):
             dtype=torch.bfloat16 if self.model_name in to_quantize else "auto",
             quantization="bitsandbytes" if self.model_name in to_quantize else None,
             enforce_eager=False,
-            rope_scaling={"rope_type": "yarn", "factor": 4.0, "original_max_position_embeddings": 32768} if self.model_name == "Qwen/Qwen3-235B-A22B" else None,
+            # vLLM 0.23 removed the `rope_scaling` kwarg from EngineArgs; it was only ever
+            # set for Qwen3-235B-A22B (None for every other model). To run that model under
+            # vLLM >= 0.23, pass the YaRN scaling via `hf_overrides={"rope_scaling": {...}}`.
             max_num_seqs=1,
             # max_model_len=70000 if self.model_name.endswith("11B-Vision-Instruct") else 120000,
             tensor_parallel_size=max(torch.cuda.device_count() - 1, 1) if self.use_all_but_last_device else torch.cuda.device_count(),

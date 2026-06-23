@@ -7,7 +7,7 @@ repo at via `MTBBENCH_MODELS_ROOT` (see `scripts/link_data.sh` and the README).
 On the CoreWeave reno cluster they are staged, group-readable to `slurm-users`, at:
 
 ```
-/mnt/data/artifacts/silico/tumor_board/models/
+/mnt/data/artifacts/tumor_board/models/
 ```
 
 | Model | Subdir | Size | Repo ID | Loads via |

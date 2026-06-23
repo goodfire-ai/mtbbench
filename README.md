@@ -134,7 +134,7 @@ MTBBENCH_MODELS_ROOT=/abs/path/to/models \
 bash scripts/link_data.sh
 ```
 
-On the CoreWeave reno cluster the staged root is `/mnt/data/artifacts/silico/tumor_board`
+On the CoreWeave reno cluster the staged root is `/mnt/data/artifacts/tumor_board`
 (`.../data`, `.../models`), group-readable to `slurm-users`. See `MODELS.md` for the models.
 
 ### 3. Run both tracks

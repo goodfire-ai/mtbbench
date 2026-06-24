@@ -13,6 +13,7 @@ from neurips25.utils.load_model import get_model
 
 if __name__ == "__main__":
     args = get_parser()
+    os.makedirs(args.output_dir, exist_ok=True)
     conf = OmegaConf.load("neurips25/configs/base.yaml")
     # Load the patient cases from the JSON file
     if args.dataset == "hancock":
@@ -32,7 +33,14 @@ if __name__ == "__main__":
     main_llm, model_name = get_model(args.doctor_model)
 
     # Loop through the patient cases and run the agent
+    processed = 0
     for case_id in list(patient_cases.keys()):
+        # Stop early once we've processed the requested number of newly-run cases
+        # (used by the smoke / reproduction harness; default None runs the full set).
+        if args.max_cases is not None and processed >= args.max_cases:
+            print(f"Reached --max-cases={args.max_cases}, stopping.")
+            break
+
         logs = [x.split("_")[0] for x in os.listdir(args.output_dir)]
         if case_id in logs:
             print(f"Case {case_id} already exists, skipping...")
@@ -41,14 +49,21 @@ if __name__ == "__main__":
         # How to see how much memory allocated to torch model GPU RAM
         print(torch.cuda.memory_allocated() / 1024 ** 3, "GB")
 
-        # You can use the following default agent if you do not want to use tools
-        agent = DoctorAgent(main_llm, main_llm, model_name=model_name, output_dir=args.output_dir)
-        # if args.dataset == "hancock":
-        #     agent = DoctorAgentWithTools(main_llm, main_llm, model_name=model_name, output_dir=args.output_dir)
-        # elif args.dataset == "msk":
-        #     agent = DoctorAgentWithToolsMsk(main_llm, main_llm, model_name=model_name, output_dir=args.output_dir)
+        # Select the agent. By default the base, no-tools DoctorAgent is used; passing
+        # --use-tools selects the tool-augmented agent for the dataset (HANCOCK: CONCH +
+        # IHC density tool; MSK: the MSK tool set).
+        if args.use_tools:
+            if args.dataset == "hancock":
+                agent = DoctorAgentWithTools(main_llm, main_llm, model_name=model_name, output_dir=args.output_dir)
+            elif args.dataset == "msk":
+                agent = DoctorAgentWithToolsMsk(main_llm, main_llm, model_name=model_name, output_dir=args.output_dir)
+            else:
+                raise ValueError(f"--use-tools given but no tool agent is defined for dataset {args.dataset!r}")
+        else:
+            agent = DoctorAgent(main_llm, main_llm, model_name=model_name, output_dir=args.output_dir)
         case_data = patient_cases[case_id]
         chat = agent.run_case(case_data=case_data, case_id=case_id)
+        processed += 1
 
         # How to see how much memory allocated to torch model GPU RAM
         print(torch.cuda.memory_allocated() / 1024 ** 3, "GB")

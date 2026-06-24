@@ -23,7 +23,10 @@ class Qwen25VLEval(BaseHuggingFaceEval):
             torch_dtype=torch.bfloat16, 
             device_map="auto" if not self.use_last_device_for_eval else f"cuda:{torch.cuda.device_count() - 1}",
             quantization_config=quantization_config,
-            attn_implementation="flash_attention_2",
+            # flash_attention_2 has no prebuilt wheel for torch 2.11 + cu130; sdpa is the
+            # portable fallback. Set attn_implementation="flash_attention_2" if a matching
+            # flash-attn build is available in your environment.
+            attn_implementation="sdpa",
         )
 
     def load_processor(self):

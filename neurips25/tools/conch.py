@@ -13,6 +13,11 @@ class Conch:
         self.device = device
         self.model, self.preprocess = create_model_from_pretrained('conch_ViT-B-16', "hf_hub:MahmoodLab/conch", force_image_size=post_process_size, device=self.device)
         self.tokenizer = get_tokenizer()
+        # transformers 5.x removed PreTrainedTokenizer.batch_encode_plus, which conch's
+        # custom tokenizer still calls. __call__ takes the same kwargs and returns the same
+        # BatchEncoding, so alias it for forward-compatibility with transformers >= 5.
+        if not hasattr(self.tokenizer, "batch_encode_plus"):
+            self.tokenizer.batch_encode_plus = self.tokenizer.__call__
 
     
     def image_to_text_retrieval(self, image_path: str, prompts: list[str]) -> tuple[str, list[float]]:
